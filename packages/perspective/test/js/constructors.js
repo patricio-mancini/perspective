@@ -984,7 +984,7 @@ module.exports = perspective => {
 
         it("Handles datetime strings in US locale string", async function() {
             const data = {
-                x: ["1/1/2020 12:30:45 PM", "03/15/2020 11:30:45 AM", "06/30/2020 01:30:45 AM", "12/31/2020 11:59:59 PM"]
+                x: ["1/1/2020, 12:30:45 PM", "03/15/2020, 11:30:45 AM", "06/30/2020, 01:30:45 AM", "12/31/2020, 11:59:59 PM"]
             };
             const table = perspective.table(data);
             const schema = await table.schema();
@@ -997,30 +997,7 @@ module.exports = perspective => {
             const result = await view.to_columns();
 
             const expected = {
-                x: ["1/1/2020 12:30:45 PM", "03/15/2020 11:30:45 AM", "06/30/2020 01:30:45 AM", "12/31/2020 11:59:59 PM"].map(v => new Date(v).getTime())
-            };
-
-            expect(result).toEqual(expected);
-            view.delete();
-            table.delete();
-        });
-
-        it("Handles datetime strings in UK locale string", async function() {
-            const data = {
-                x: ["1/1/2020 12:30:45", "3/3/2020 19:30:45", "15/6/2020 01:30:45", "31/12/2020 23:59:59"]
-            };
-            const table = perspective.table(data);
-            const schema = await table.schema();
-
-            expect(schema).toEqual({
-                x: "datetime"
-            });
-
-            const view = table.view();
-            const result = await view.to_columns();
-
-            const expected = {
-                x: ["1/1/2020 12:30:45", "3/3/2020 19:30:45", "15/6/2020 01:30:45", "31/12/2020 23:59:59"].map(v => new Date(v).getTime())
+                x: ["1/1/2020, 12:30:45 PM", "03/15/2020, 11:30:45 AM", "06/30/2020, 01:30:45 AM", "12/31/2020, 11:59:59 PM"].map(v => new Date(v).getTime())
             };
 
             expect(result).toEqual(expected);

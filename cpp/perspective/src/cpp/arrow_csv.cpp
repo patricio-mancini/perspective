@@ -145,7 +145,6 @@ namespace apachearrow {
         std::make_shared<CustomISO8601Parser>(),
         arrow::TimestampParser::MakeStrptime("%Y-%m-%d\\D%H:%M:%S.%f"),
         arrow::TimestampParser::MakeStrptime("%m/%d/%Y, %I:%M:%S %p"), // US locale string
-        arrow::TimestampParser::MakeStrptime("%d/%m/%Y, %H:%M:%S"), // UK locale string
         arrow::TimestampParser::MakeStrptime("%m-%d-%Y"),
         arrow::TimestampParser::MakeStrptime("%m/%d/%Y"),
         arrow::TimestampParser::MakeStrptime("%d %m %Y"),
@@ -156,7 +155,6 @@ namespace apachearrow {
         std::make_shared<CustomISO8601Parser>(),
         arrow::TimestampParser::MakeStrptime("%Y-%m-%d\\D%H:%M:%S.%f"),
         arrow::TimestampParser::MakeStrptime("%m/%d/%Y, %I:%M:%S %p"), // US locale string
-        arrow::TimestampParser::MakeStrptime("%d/%m/%Y, %H:%M:%S"), // UK locale string
         arrow::TimestampParser::MakeStrptime("%m-%d-%Y"),
         arrow::TimestampParser::MakeStrptime("%m/%d/%Y"),
         arrow::TimestampParser::MakeStrptime("%d %m %Y"),
