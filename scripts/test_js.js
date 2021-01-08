@@ -50,8 +50,9 @@ function jest() {
         --rootDir=.
         --config=packages/perspective-test/jest.all.config.js 
         --color
-        --verbose 
+        --verbose
         --maxWorkers=50%
+        --testPathIgnorePatterns='timezone'
         ${getarg("--bail") && "--bail"}
         ${getarg("--debug") || "--silent 2>&1 --noStackTrace"} 
         --testNamePattern="${get_regex()}"`;
