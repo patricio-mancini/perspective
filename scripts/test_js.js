@@ -7,9 +7,7 @@
  *
  */
 
-const {bash, execute, getarg, docker} = require("./script_utils.js");
-const minimatch = require("minimatch");
-const execSync = require("child_process").execSync;
+const {bash, execute, execute_throw, getarg, docker} = require("./script_utils.js");
 const fs = require("fs");
 
 const DEBUG_FLAG = getarg("--debug") ? "" : "--silent";
@@ -40,7 +38,7 @@ function silent(x) {
 /**
  * Run tests for all packages in parallel.
  */
-function jest() {
+function jest_all() {
     return bash`
         PSP_SATURATE=${!!getarg("--saturate")} 
         PSP_PAUSE_ON_FAILURE=${!!getarg("--interactive")}
@@ -50,7 +48,7 @@ function jest() {
         --rootDir=.
         --config=packages/perspective-test/jest.all.config.js 
         --color
-        --verbose
+        --verbose 
         --maxWorkers=50%
         --testPathIgnorePatterns='timezone'
         ${getarg("--bail") && "--bail"}
@@ -59,9 +57,31 @@ function jest() {
 }
 
 /**
+ * Run tests for a single package.
+ */
+function jest_single() {
+    console.log(`-- Running "${PACKAGE}" test suite`);
+    return bash`
+        PSP_SATURATE=${!!getarg("--saturate")}
+        PSP_PAUSE_ON_FAILURE=${!!getarg("--interactive")}
+        WRITE_TESTS=${IS_WRITE}
+        TZ=UTC 
+        node_modules/.bin/lerna exec 
+        --concurrency 1 
+        --no-bail
+        --scope="@finos/${PACKAGE}" 
+        -- 
+        yarn test:run
+        ${DEBUG_FLAG}
+        ${getarg("--interactive") && "--runInBand"}
+        --testNamePattern="${get_regex()}"`;
+}
+
+/**
  * Run timezone tests in a new Node process.
  */
 function jest_timezone() {
+    console.log("-- Running Perspective.js timezone test suite");
     return bash`
         node_modules/.bin/lerna exec 
         --concurrency 1 
@@ -109,35 +129,21 @@ try {
                 --scope="@finos/${PACKAGE}"`;
         }
         if (getarg("--quiet")) {
-            console.log("-- Running Perspective.js timezone test suite in quiet mode");
-            execute(silent(jest_timezone()));
+            // Run all tests with suppressed output.
             console.log("-- Running test suite in quiet mode");
-            execute(silent(jest()));
+            execute(silent(jest_timezone()));
+            execute(silent(jest_all()));
         } else if (process.env.PACKAGE) {
-            console.log(`-- Running "${PACKAGE}" test suite`);
+            // Run tests for a single package.
             if (PACKAGE === "perspective") {
-                console.log("-- Running Perspective.js timezone test suite");
                 execute(jest_timezone());
             }
-            execute`
-                PSP_SATURATE=${!!getarg("--saturate")}
-                PSP_PAUSE_ON_FAILURE=${!!getarg("--interactive")}
-                WRITE_TESTS=${IS_WRITE}
-                TZ=UTC 
-                node_modules/.bin/lerna exec 
-                --concurrency 1 
-                --no-bail
-                --scope="@finos/${PACKAGE}" 
-                -- 
-                yarn test:run
-                ${DEBUG_FLAG}
-                ${getarg("--interactive") && "--runInBand"}
-                --testNamePattern="${get_regex()}"`;
+            execute(jest_single());
         } else {
-            console.log("-- Running Perspective.js timezone test suite");
-            execute(jest_timezone());
+            // Run all tests with full output.
             console.log("-- Running test suite in fast mode");
-            execute(jest());
+            execute(jest_timezone());
+            execute(jest_all());
         }
     }
 } catch (e) {
