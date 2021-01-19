@@ -154,25 +154,6 @@ declare module "@finos/perspective" {
         send(msg: any): void;
     }
 
-    export type WebSocketServerOptions = {
-        assets?: string[];
-        host_psp?: boolean;
-        port?: number;
-        on_start?: any;
-    };
-
-    export class WebSocketManager {
-        add_connection(ws: ws): void;
-        host_table(name: string, table: Table): void;
-        eject_table(name: string): void;
-        eject_view(name: string): void;
-    }
-
-    export class WebSocketServer extends WebSocketManager {
-        constructor(config?: WebSocketServerOptions);
-        close(): void;
-    }
-
     export function perspective_assets(assets: string[], host_psp: boolean): (request: any, response: any) => void;
 
     type perspective = {
@@ -190,16 +171,3 @@ declare module "@finos/perspective" {
 
     export default impl;
 }
-
-declare module "@finos/perspective/build/psp.async.wasm" {
-    const impl: ArrayBuffer;
-    export default impl;
-}
-
-declare module "@finos/perspective/build/psp.sync.wasm" {
-    const impl: ArrayBuffer;
-    export default impl;
-}
-
-declare module "@finos/perspective/build/perspective.wasm.worker.js" {}
-declare module "@finos/perspective/build/perspective.asmjs.worker.js" {}

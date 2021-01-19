@@ -23,9 +23,6 @@
         "babel.config.js"
     ],
     "scripts": {
-        "bench": "npm-run-all bench:build bench:run",
-        "bench:build": "echo \"No Benchmarks\"",
-        "bench:run": "echo \"No Benchmarks\"",
         "prebuild": "mkdirp dist/esm",
         "build:babel": "cpx \"src/**/*\" dist && babel src/js --source-maps --out-dir dist/esm",
         "build:webpack:cjs": "webpack --color --config src/config/cjs.config.js",

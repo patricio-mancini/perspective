@@ -58,19 +58,6 @@ const PROMPT_DEBUG = {
     default: CONFIG["PSP_DEBUG"] || false
 };
 
-const PROMPT_DOCKER = {
-    type: "confirm",
-    name: "PSP_DOCKER",
-    message: "Use docker for build env?",
-    default: CONFIG["PSP_DOCKER"] || false
-};
-
-async function choose_docker() {
-    const answers = await inquirer.prompt([PROMPT_DOCKER]);
-    CONFIG.add(answers);
-    CONFIG.write();
-}
-
 async function focus_package() {
     const new_config = await inquirer.prompt([
         {
@@ -99,36 +86,10 @@ async function focus_package() {
                     name: "perspective-viewer-datagrid",
                     value: "perspective-viewer-datagrid"
                 },
-
-                {
-                    key: "g",
-                    name: "perspective-viewer-hypergrid",
-                    value: "perspective-viewer-hypergrid"
-                },
                 {
                     key: "d",
                     name: "perspective-viewer-d3fc",
                     value: "perspective-viewer-d3fc"
-                },
-                {
-                    key: "c",
-                    name: "perspective-viewer-highcharts",
-                    value: "perspective-viewer-highcharts"
-                },
-                {
-                    key: "o",
-                    name: "perspective-phosphor",
-                    value: "perspective-phosphor"
-                },
-                {
-                    key: "l",
-                    name: "perspective-jupyterlab",
-                    value: "perspective-jupyterlab"
-                },
-                {
-                    key: "w",
-                    name: "perspective-workspace",
-                    value: "perspective-workspace"
                 }
             ]
         }
@@ -140,7 +101,6 @@ async function focus_package() {
 async function javascript_options() {
     const new_config = await inquirer.prompt([
         PROMPT_DEBUG,
-        PROMPT_DOCKER,
         {
             type: "confirm",
             name: "PSP_DOCKER_PUPPETEER",
@@ -157,29 +117,18 @@ async function javascript_options() {
     }
 }
 
-async function python_options() {
-    const new_config = await inquirer.prompt([PROMPT_DEBUG, PROMPT_DOCKER]);
-    CONFIG.add(new_config);
-    CONFIG.write();
-}
-
 async function choose_project() {
     const answers = await inquirer.prompt([
         {
             type: "expand",
             name: "PSP_PROJECT",
-            message: "Focus (J)avascript or (P)ython?",
+            message: "Focus (J)avascript?",
             default: CONFIG["PSP_PROJECT"] || "js",
             choices: [
                 {
                     key: "j",
                     name: "Javascript",
                     value: "js"
-                },
-                {
-                    key: "p",
-                    name: "python",
-                    value: "python"
                 }
             ]
         }
@@ -192,13 +141,8 @@ async function choose_project() {
                 await focus_package();
             }
             break;
-        case "python":
-            {
-                await python_options();
-            }
-            break;
         default: {
-            choose_docker();
+            await focus_package();
         }
     }
 }

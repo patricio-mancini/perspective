@@ -16,14 +16,8 @@ if (!fs.existsSync("./.perspectiverc")) {
     require("./setup");
 } else if (process.env.PSP_PROJECT === "js") {
     require("./test_js");
-} else if (process.env.PSP_PROJECT === "python") {
-    require("./test_python");
-} else if (process.env.PSP_PROJECT === "cpp") {
-    require("./test_cpp");
 } else if (process.env.PSP_PROJECT === "") {
     require("./test_js");
-    require("./test_python");
-    require("./test_cpp");
 } else {
     console.error(`Invalid project "${process.env.PSP_PROJECT}" selected, running setup`);
     process.env.PSP_BUILD_IMMEDIATELY = 1;

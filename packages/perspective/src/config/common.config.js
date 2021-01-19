@@ -1,10 +1,8 @@
 const path = require("path");
-const PerspectivePlugin = require("@finos/perspective-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const plugins = [];
 
-function common({build_worker, no_minify, inline} = {}) {
-    plugins.push(new PerspectivePlugin({build_worker: build_worker, workerLoaderOptions: {inline, name: "[name].worker.js"}, wasmLoaderOptions: {inline, name: "[name]"}}));
+function common({no_minify} = {}) {
     return {
         mode: process.env.PSP_NO_MINIFY || process.env.PSP_DEBUG || no_minify ? "development" : process.env.NODE_ENV || "production",
         plugins: plugins,

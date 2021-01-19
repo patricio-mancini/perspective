@@ -12,9 +12,6 @@
         "babel.config.js"
     ],
     "scripts": {
-        "bench": "npm-run-all bench:build bench:run",
-        "bench:build": "echo \"No Benchmarks\"",
-        "bench:run": "echo \"No Benchmarks\"",
         "prebuild": "mkdirp dist/esm",
         "build:babel": "cpx \"src/**/*\" dist && babel src/js --source-maps --out-dir dist/esm",
         "build:webpack:esm": "webpack --color --config src/config/cjs.config.js",
@@ -44,7 +41,6 @@
         "regular-table": "=0.1.5"
     },
     "devDependencies": {
-        "@finos/perspective-test": "^0.6.0",
-        "@finos/perspective-webpack-plugin": "^0.6.0"
+        "@finos/perspective-test": "^0.6.0"
     }
 }

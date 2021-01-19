@@ -22,14 +22,10 @@
     "scripts": {
         "build": "npm-run-all build:babel:* build:webpack build:webpack:umd:inline",
         "build:babel:esm": "babel src/js --source-maps --out-dir dist/esm",
-        "build:babel:emsdk": "BABEL_MODULE=auto babel dist/obj --source-maps --out-dir dist/cjs",
         "build:babel:cjs": "BABEL_MODULE=auto babel dist/esm --source-maps --out-dir dist/cjs",
         "build:webpack": "npm-run-all -p build:webpack:* ",
         "build:webpack:umd:inline": "webpack --color --config src/config/perspective.inline.config.js",
         "build:webpack:umd": "webpack --color --config src/config/perspective.config.js",
-        "docs": "npm-run-all docs:jsdoc docs:deploy",
-        "docs:jsdoc": "jsdoc2md src/js/perspective.js -p list --separators --no-gfm > README.md",
-        "docs:deploy": "(echo \"---\nid: perspective\ntitle: perspective API\n---\n\n\"; cat README.md) > ../../docs/obj/perspective.md",
         "test:run": "jest --color --ci",
         "test": "npm-run-all test:run",
         "clean": "rimraf dist"
@@ -65,7 +61,6 @@
         "ws": "^6.1.2"
     },
     "devDependencies": {
-        "@finos/perspective-webpack-plugin": "^0.6.0",
         "jsverify": "^0.8.4",
         "moment": "^2.19.1",
         "papaparse": "^5.2.0"

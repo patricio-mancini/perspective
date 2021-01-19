@@ -34,6 +34,7 @@ export class WebSocketClient extends Client {
         setTimeout(ping, PING_TIMEOUT);
 
         this._ws.onmessage = msg => {
+            console.log(msg);
             if (msg.data === "pong") {
                 return;
             }
